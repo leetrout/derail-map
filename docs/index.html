@@ -1,9 +1,84 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Derail Valley Map</title>
-    </head>
-    <body>
-        Map goes here.
-    </body>
+
+<head>
+  <title>Derail Valley Map</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css"
+    integrity="sha512-NmLkDIU1C/C88wi324HBc+S2kLhi08PN5GDeUVVVC/BVt/9Izdsc9SVeVfA1UZbY3sHUlDSyRXhCzHfr6hmPPw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <script src="https://d3js.org/d3.v6.min.js"></script>
+  <style>
+    body {
+      background: #333333;
+      font-family: Verdana, Geneva, Tahoma, sans-serif;
+      color: #ddd;
+    }
+
+    a {
+      color: #ddd;
+    }
+
+    #credits {
+      padding-left: 1rem;
+    }
+
+    #map {
+      stroke: none;
+      height: 95vh;
+      width: 95vw;
+    }
+
+    #map svg {
+      width: 99vw;
+      height: 99vh;
+    }
+
+    image {
+      stroke: none;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="map"></div>
+  <div id="credits">
+    <a href="https://steamcommunity.com/sharedfiles/filedetails/?id=3012455272">
+      Map by Dr. Zoidberg
+    </a>
+  </div>
+
+  <script>
+    const imgHeight = 6890, imgWidth = 7997,
+      width = 100, height = 100,
+      offsetX = 0, offsetY = 0;
+
+    // Instance of d3 zoom with bound handler
+    let zoom = d3.zoom().scaleExtent([0, 4]).on("zoom", handleZoom);
+
+    // Create an svg group and call zoom on it
+    zoomWrapper = d3.select("div#map")
+      .append("svg").append("g")
+      .call(zoom);
+
+    // Add a child group to apply the transforms
+    svg = zoomWrapper
+      .append("g");
+
+    // Add the map
+    svg.append("image")
+      .attr("xlink:href", "map.svg");
+
+    // When we zoom or pan apply the transform
+    function handleZoom(e) {
+      svg.attr("transform", e.transform);
+    }
+
+    // Scale and center the map on startup
+    let scale = window.innerWidth / imgWidth;
+    let transX = -400
+    zoomWrapper.call(zoom.transform, d3.zoomIdentity.scale(scale));
+  </script>
+
+</body>
+
 </html>
